@@ -31,7 +31,7 @@ task("foo", "this is my first custom task", async (taskArgs, hre) => {
 const { DEPLOYER_SIGNER_PRIVATE_KEY, INFURA_PROJECT_ID } = process.env
 
 module.exports = {
-  solidity: "0.8.4",
+  solidity: "0.8.7",
   networks: {
     rinkeby: {
       url: `https://rinkeby.infura.io/v3/${INFURA_PROJECT_ID}`,
