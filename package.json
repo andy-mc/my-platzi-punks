@@ -10,5 +10,15 @@
     "ethereum-waffle": "^3.4.0",
     "ethers": "^5.5.2",
     "hardhat": "^2.8.0"
+  },
+  "dependencies": {
+    "dotenv": "^10.0.0"
+  },
+  "scripts": {
+    "compile": "npx hardhat compile",
+    "test": "npx hardhat test",
+    "deploy": "npx hardhat run scripts/sample-script.js",
+    "deploy:rinkeby": "npx hardhat run scripts/sample-script.js --network rinkeby",
+    "deploy:ropsten": "npx hardhat run scripts/sample-script.js --network ropsten"
   }
 }
