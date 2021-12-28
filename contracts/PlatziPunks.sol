@@ -11,20 +11,21 @@ import "./Base64.sol";
 
 contract PlatziPunks is ERC721, ERC721Enumerable {
   using Counters for Counters.Counter;
+  Counters.Counter private _tokenIds;
 
   uint256 public maxSupply;
-  Counters.Counter private _tokenCounter;
 
   constructor(uint256 _maxSupply) ERC721("PlatziPunks", "PLPKS") {
     maxSupply = _maxSupply;
   }
 
   function mint() public {
-    uint256 tokenId = _tokenCounter.current();
-    require(tokenId < maxSupply, 'No Platzi Punks left :(');
+    _tokenIds.increment();
 
-    _safeMint(msg.sender, tokenId);
-    _tokenCounter.increment();
+    uint256 newItemId = _tokenIds.current();
+    require(newItemId <= maxSupply, 'No Platzi Punks left :(');
+
+    _safeMint(msg.sender, newItemId);
   }
   
   function tokenURI(uint256 tokenId)
