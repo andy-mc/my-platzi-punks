@@ -10,7 +10,8 @@
     "dotenv": "^10.0.0",
     "ethereum-waffle": "^3.4.0",
     "ethers": "^5.5.2",
-    "hardhat": "^2.8.0"
+    "hardhat": "^2.8.0",
+    "solidity-coverage": "^0.7.17"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.4.1"
@@ -21,6 +22,7 @@
     "test:rinkeby": "npx hardhat test --network rinkeby",
     "test:kovan": "npx hardhat test --network kovan",
     "test:ropsten": "npx hardhat test --network ropsten",
+    "test:coverage": "npx hardhat coverage",
     "deploy": "npx hardhat run scripts/deploy.js",
     "deploy:rinkeby": "npx hardhat run scripts/deploy.js --network rinkeby",
     "deploy:kovan": "npx hardhat run scripts/deploy.js --network kovan",
