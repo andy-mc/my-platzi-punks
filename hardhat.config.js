@@ -38,6 +38,18 @@ module.exports = {
       accounts: [
         DEPLOYER_SIGNER_PRIVATE_KEY
       ]
+    },
+    kovan: {
+      url: `https://kovan.infura.io/v3/${INFURA_PROJECT_ID}`,
+      accounts: [
+        DEPLOYER_SIGNER_PRIVATE_KEY
+      ]
+    },
+    ropsten: {
+      url: `https://ropsten.infura.io/v3/${INFURA_PROJECT_ID}`,
+      accounts: [
+        DEPLOYER_SIGNER_PRIVATE_KEY
+      ]
     }
   }
 };
