@@ -221,11 +221,10 @@ contract PunkDNA {
         pure
         returns (uint8)
     {
-        return
-            uint8(
-                (_dna % (10 ** (_rightDiscard + ADN_SECTION_SIZE))) /
-                    (10**_rightDiscard)
-            );
+        return uint8(
+            _dna % (10 ** (_rightDiscard + ADN_SECTION_SIZE)) /
+            10 ** _rightDiscard
+        );
     }
 
     function getAccessoriesType(uint256 _dna)
