@@ -1,6 +1,6 @@
 const { expect } = require("chai");
 
-describe.only("Platzi Punks Contract", function () {
+describe("Platzi Punks Contract", function () {
   const setup = async (_maxSupply = 2, tokenId = 1) => {
     const PlatziPunks = await ethers.getContractFactory("XPlatziPunks");
     const platzi_punks = await PlatziPunks.deploy(_maxSupply);
