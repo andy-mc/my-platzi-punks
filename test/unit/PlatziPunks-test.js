@@ -82,8 +82,8 @@ describe("PlatziPunks", function () {
       const punk_token_1 = await platzi_punks.tokenURI(1)
       const punk_token_2 = await platzi_punks.tokenURI(2)
 
-      var punk_token_1_data = Buffer(punk_token_1.split(',')[1], 'base64').toString();
-      var punk_token_2_data = Buffer(punk_token_2.split(',')[1], 'base64').toString();
+      var punk_token_1_data = Buffer.from(punk_token_1.split(',')[1], 'base64').toString('ascii');
+      var punk_token_2_data = Buffer.from(punk_token_2.split(',')[1], 'base64').toString('ascii');
       
       expect(punk_token_1_data).to.includes('{ "name": "PlatziPunks #1"');
       expect(punk_token_1_data).to.includes('"image": "https://avataaars.io/?accessoriesType');
