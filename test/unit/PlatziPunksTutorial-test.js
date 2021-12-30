@@ -34,41 +34,22 @@ describe.only("Platzi Punks Contract", function () {
 
     it("Should init max supply with pass params", async () => {
       const maxSupply = 150;
-      const {platzi_punks} = await setup(150);
+      const {platzi_punks} = await setup(maxSupply);
       expect(await platzi_punks.maxSupply()).to.equal(maxSupply);
     });
   })
 
-  describe("When mint a token", async () =>{
-    it("Should increment the balanceof the owner by 1 every mint", async () => {
-      expect(await platzi_punks.balanceOf(owner.address)).to.equal(0);
-      await platzi_punks.mint()
-      await platzi_punks.mint()
-      expect(await platzi_punks.balanceOf(owner.address)).to.equal(2);
-    });
-
-    it("Should give the ownership of minted tokenId to the owner", async () => {
-      await platzi_punks.mint()
+  describe("Minting", async () => {
+    it("Mints a new token and assigns it to owner", async () => {
+      await platzi_punks.mint();
       expect(await platzi_punks.ownerOf(1)).to.equal(owner.address);
     });
 
-    it("Should increment tokenId in every mint", async () => {
-      await platzi_punks.mint()
-      expect(await platzi_punks.ownerOf(1)).to.equal(owner.address);
-      await platzi_punks.mint()
-      expect(await platzi_punks.ownerOf(1)).to.equal(owner.address);
-    });
+    it("Has a minting limit", async () => {      
+      const {platzi_punks} = await setup(2);
 
-    it("Should save token dna on DnaByToken", async () => {
-      await platzi_punks.mint()
-      expect(await platzi_punks.DnaByToken(1).toString().length).to.equal(16);
-      expect(await platzi_punks.DnaByToken(1)).to.equal(PseudoRandomDNA);
-    });
-  }) 
-
-  describe("Token Max supply", async () =>{
-    it("Should throw an error if minting exceeds the token max supply limit", async () => {
       try {
+        // Exceeds minting
         await platzi_punks.mint()
         await platzi_punks.mint()
         await platzi_punks.mint()
@@ -76,6 +57,26 @@ describe.only("Platzi Punks Contract", function () {
       } catch (error) {
         expect(error.message).to.contains('No Platzi Punks left :(');
       }
+    });
+
+    it("Should increment the balanceof the owner by 1 every mint", async () => {
+      expect(await platzi_punks.balanceOf(owner.address)).to.equal(0);
+      await platzi_punks.mint()
+      await platzi_punks.mint()
+      expect(await platzi_punks.balanceOf(owner.address)).to.equal(2);
+    });
+
+    it("Should increment tokenId in every mint", async () => {
+      await platzi_punks.mint()
+      expect(await platzi_punks.ownerOf(1)).to.equal(owner.address);
+      await platzi_punks.mint()
+      expect(await platzi_punks.ownerOf(2)).to.equal(owner.address);
+    });
+
+    it("Should save token dna on DnaByToken", async () => {
+      await platzi_punks.mint()
+      expect(await platzi_punks.DnaByToken(1).toString().length).to.equal(16);
+      expect(await platzi_punks.DnaByToken(1)).to.equal(PseudoRandomDNA);
     });
   }) 
 
