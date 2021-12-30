@@ -89,29 +89,22 @@ describe.only("Platzi Punks Contract", function () {
         expect(error.message).to.contains('ERC721Metadata: URI query for nonexistent token');
       }
     });
-    
-    it("Should return the correct tokenURI protocol mime type", async () => {
-        await platzi_punks.mint()
-        expect(await platzi_punks.tokenURI(1)).to.includes("data:application/json;base64,");
-    });
 
-    it("Should name token with correct number based on tokenId", async () => {
-      await platzi_punks.mint()
+    it.only("Should name token with correct number based on tokenId", async () => {
       await platzi_punks.mint()
 
-      const punk_token_1 = await platzi_punks.tokenURI(1)
-      const punk_token_2 = await platzi_punks.tokenURI(2)
+      const tokenURI = await platzi_punks.tokenURI(1)
+      const [ prefix, base64JSON ] = tokenURI.split(',')
+      const stringifiedMetaData = Buffer.from(base64JSON, 'base64').toString('ascii');
+      const metadata = JSON.parse(stringifiedMetaData)
 
-      var punk_token_1_data = Buffer(punk_token_1.split(',')[1], 'base64').toString();
-      var punk_token_2_data = Buffer(punk_token_2.split(',')[1], 'base64').toString();
-      
-      expect(punk_token_1_data).to.includes('{ "name": "PlatziPunks #1"');
-      expect(punk_token_1_data).to.includes('"image": "https://avataaars.io/?accessoriesType');
-      expect(punk_token_1_data).to.includes('&topType=');
+      expect(prefix).to.equal("data:application/json;base64");
+      expect(metadata).to.have.all.keys("name", "description", "image")
 
-      expect(punk_token_2_data).to.includes('{ "name": "PlatziPunks #2"');
-      expect(punk_token_2_data).to.includes('"image": "https://avataaars.io/?accessoriesType');
-      expect(punk_token_2_data).to.includes('&topType=');
+      expect(metadata.name).to.includes('PlatziPunks #1');
+      expect(metadata.image).to.includes('https://avataaars.io/?')
+      expect(metadata.image).to.includes('accessoriesType=')
+      expect(metadata.image).to.includes('topType=')
     });
 
     it("Should have _baseUri avataaars.io", async () => {
