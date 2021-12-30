@@ -213,26 +213,18 @@ contract PunkDNA {
         return uint256(hashedParams);
     }
 
-    // Get attributes
     uint8 constant ADN_SECTION_SIZE = 2;
 
-    function _getDNASection(uint256 _dna, uint8 _rightDiscard)
-        internal
-        pure
-        returns (uint8)
-    {
+    function _getDNASection(uint256 _dna, uint8 _rightDiscard) internal pure returns (uint8) {
         return uint8(
             _dna % (10 ** (_rightDiscard + ADN_SECTION_SIZE)) /
             10 ** _rightDiscard
         );
     }
 
-    function getAccessoriesType(uint256 _dna)
-        public
-        view
-        returns (string memory)
-    {
+    function getAccessoriesType(uint256 _dna) public view returns (string memory) {
         uint256 dnaSection = _getDNASection(_dna, 0);
+        // 2 first digits dna %  options length
         return _accessoriesType[dnaSection % _accessoriesType.length];
     }
 
