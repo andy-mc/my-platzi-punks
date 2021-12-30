@@ -18,4 +18,9 @@ describe("PunkDNA", function () {
     expect(await punk_dna.x_getDNASection(87654321, 6)).to.equal(87);
     expect(await punk_dna.x_getDNASection(87654321, 8)).to.equal(0);
   })
+
+  it('should get deterministic PseudoRandom DNA', async() => {
+    const [signer] = await ethers.getSigners();
+    expect(await punk_dna.deterministicPseudoRandomDNA(1, signer.address)).to.equal("68357912599105148984470011869894139092657358700352629360189177778860839804443");
+  })
 });

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
+import "hardhat/console.sol";
 
 contract PunkDNA {
     string[] private _accessoriesType = [
@@ -207,8 +208,8 @@ contract PunkDNA {
         returns (uint256)
     {
         uint256 combinedParams = _tokenId + uint160(_minter);
-        bytes memory encodedParams = abi.encodePacked(combinedParams);
-        bytes32 hashedParams = keccak256(encodedParams);
+        // bytes memory encodedParams = abi.encodePacked(combinedParams);
+        bytes32 hashedParams = keccak256(abi.encodePacked(combinedParams));
 
         return uint256(hashedParams);
     }
