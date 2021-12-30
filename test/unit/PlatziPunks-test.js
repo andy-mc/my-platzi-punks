@@ -3,10 +3,16 @@ const { ethers } = require("hardhat");
 
 describe("PlatziPunks", function () {
   let platzi_punks;
+  let sender;
+  let PseudoRandomDNA;
+
   beforeEach(async function(){
-    const PlatziPunks = await ethers.getContractFactory("PlatziPunks");
+    const PlatziPunks = await ethers.getContractFactory("XPlatziPunks");
     platzi_punks = await PlatziPunks.deploy(2);
     await platzi_punks.deployed();
+
+    [sender] = await ethers.getSigners();
+    PseudoRandomDNA = await platzi_punks.deterministicPseudoRandomDNA(1, sender.address)
   })
 
   it("Should init contract with name and symbol", async function () {
@@ -15,11 +21,6 @@ describe("PlatziPunks", function () {
   });
 
   describe("When mint a token", async function (){
-    let sender;
-    beforeEach(async function() {
-      [sender] = await ethers.getSigners();
-    })
-
     it("Should increment the balanceof the sender by 1 every mint", async function () {
       expect(await platzi_punks.balanceOf(sender.address)).to.equal(0);
       await platzi_punks.mint()
@@ -37,6 +38,12 @@ describe("PlatziPunks", function () {
       expect(await platzi_punks.ownerOf(1)).to.equal(sender.address);
       await platzi_punks.mint()
       expect(await platzi_punks.ownerOf(1)).to.equal(sender.address);
+    });
+
+    it("Should save token dna on DnaByToken", async function () {
+      await platzi_punks.mint()
+      expect(await platzi_punks.DnaByToken(1).toString().length).to.equal(16);
+      expect(await platzi_punks.DnaByToken(1)).to.equal(PseudoRandomDNA);
     });
   }) 
 
@@ -71,10 +78,35 @@ describe("PlatziPunks", function () {
     it("Should name token with correct number based on tokenId", async function () {
       await platzi_punks.mint()
       await platzi_punks.mint()
+
+      const punk_token_1 = await platzi_punks.tokenURI(1)
+      const punk_token_2 = await platzi_punks.tokenURI(2)
+
+      var punk_token_1_data = Buffer(punk_token_1.split(',')[1], 'base64').toString();
+      var punk_token_2_data = Buffer(punk_token_2.split(',')[1], 'base64').toString();
       
-      console.log('platzi_punks.tokenURI(1):', await platzi_punks.tokenURI(1))
-      expect(await platzi_punks.tokenURI(1)).to.includes(Buffer.from('{ "name": "PlatziPunks #1"').toString('base64').slice(0, -1));
-      expect(await platzi_punks.tokenURI(2)).to.includes(Buffer.from('{ "name": "PlatziPunks #2"').toString('base64').slice(0, -1));
+      expect(punk_token_1_data).to.includes('{ "name": "PlatziPunks #1"');
+      expect(punk_token_1_data).to.includes('"image": "https://avataaars.io/?accessoriesType');
+      expect(punk_token_1_data).to.includes('&topType=');
+
+      expect(punk_token_2_data).to.includes('{ "name": "PlatziPunks #2"');
+      expect(punk_token_2_data).to.includes('"image": "https://avataaars.io/?accessoriesType');
+      expect(punk_token_2_data).to.includes('&topType=');
+    });
+
+    it("Should have _baseUri avataaars.io", async function () {
+      expect(await platzi_punks.x_baseURI()).to.equal('https://avataaars.io/');
+    });
+
+    it("Should get _paramsURI", async function () {
+      expect(await platzi_punks.x_paramsURI(PseudoRandomDNA)).to.contains('accessoriesType=');
+      expect(await platzi_punks.x_paramsURI(PseudoRandomDNA)).to.contains('topType=');
+    });
+
+    it("Should get imageByDNA", async function () {
+      expect(await platzi_punks.imageByDNA(PseudoRandomDNA)).to.contains('https://avataaars.io/?');
+      expect(await platzi_punks.imageByDNA(PseudoRandomDNA)).to.contains('accessoriesType=');
+      expect(await platzi_punks.imageByDNA(PseudoRandomDNA)).to.contains('topType=');
     });
   })
   

@@ -21,6 +21,7 @@ describe("PunkDNA", function () {
 
   it('should get deterministic PseudoRandom DNA', async() => {
     const [signer] = await ethers.getSigners();
-    expect(await punk_dna.deterministicPseudoRandomDNA(1, signer.address)).to.equal("68357912599105148984470011869894139092657358700352629360189177778860839804443");
+    expect(await punk_dna.deterministicPseudoRandomDNA(1, signer.address)).to.be.an('object');
+    expect(await punk_dna.deterministicPseudoRandomDNA(1, signer.address).toString().length).to.equal(16);
   })
 });
