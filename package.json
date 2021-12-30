@@ -20,6 +20,7 @@
   "scripts": {
     "compile": "npx hardhat compile",
     "test": "npx hardhat test",
+    "test:compile": "npx hardhat compile --force && npx hardhat test",
     "test:rinkeby": "npx hardhat test --network rinkeby",
     "test:kovan": "npx hardhat test --network kovan",
     "test:ropsten": "npx hardhat test --network ropsten",
