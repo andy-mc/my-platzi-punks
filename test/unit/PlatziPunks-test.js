@@ -75,7 +75,7 @@ describe("PlatziPunks", function () {
         expect(await platzi_punks.tokenURI(1)).to.includes("data:application/json;base64,");
     });
 
-    it("Should name token with correct number based on tokenId", async function () {
+    it.only("Should name token with correct number based on tokenId", async function () {
       await platzi_punks.mint()
       await platzi_punks.mint()
 
@@ -109,5 +109,4 @@ describe("PlatziPunks", function () {
       expect(await platzi_punks.imageByDNA(PseudoRandomDNA)).to.contains('topType=');
     });
   })
-  
 });
