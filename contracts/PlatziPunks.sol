@@ -12,6 +12,8 @@ import "./Base64.sol";
 
 contract PlatziPunks is ERC721, ERC721Enumerable, PunkDNA {
   using Counters for Counters.Counter;
+  using Strings for uint256;
+  
   Counters.Counter private _tokenIds;
 
   uint256 public maxSupply;
@@ -88,14 +90,12 @@ contract PlatziPunks is ERC721, ERC721Enumerable, PunkDNA {
   {
     require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
     
-    string memory tokenIdString = Strings.toString(tokenId);
-
     uint256 _dna = DnaByToken[tokenId];
     string memory imageUrl = imageByDNA(_dna);
 
     string memory jsonUri = Base64.encode(
       abi.encodePacked(
-        '{ "name": "PlatziPunks #', tokenIdString, '", ',
+        '{ "name": "PlatziPunks #', tokenId.toString(), '", ',
         '"description": "Platzi Punks are randomized Avataaars stored on chain to teach DApp development on Platzi", ',
         '"image": "',
         imageUrl,

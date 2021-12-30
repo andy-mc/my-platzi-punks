@@ -90,7 +90,7 @@ describe.only("Platzi Punks Contract", function () {
       }
     });
 
-    it.only("Should name token with correct number based on tokenId", async () => {
+    it("Should have tokenURI correct metadata", async () => {
       await platzi_punks.mint()
 
       const tokenURI = await platzi_punks.tokenURI(1)
